@@ -96,31 +96,30 @@ Key features of the data generation:
 This ensures **physically consistent training data** while preserving the equation-free learning paradigm.
 
 ---
-
 ## 5. Physics-Guided Loss Functions
 
-The total training loss is:
+The total training loss is defined as a weighted combination of a data loss and a physics-based regularization term:
 
-[
-\mathcal{L}
-===========
+$$
+\mathcal{L} = \mathcal{L}_{\text{data}} + \lambda\,\mathcal{L}_{\text{physics}}
+$$
 
-\mathcal{L}*{\text{data}}
-+
-\lambda,\mathcal{L}*{\text{physics}}
-]
+where:
+- $\mathcal{L}_{\text{data}}$ is the mean-squared error between predicted and reference velocity profiles,
+- $\mathcal{L}_{\text{physics}}$ encodes known physical constraints of laminar boundary-layer flow,
+- $\lambda$ controls the strength of the physics regularization.
 
 ### Physics Loss Components
 
-| Loss Term         | Physical Meaning                             |
-| ----------------- | -------------------------------------------- |
-| No-slip loss      | Enforces (u(y=0)=0)                          |
-| Smoothness loss   | Penalizes high curvature (viscous diffusion) |
-| Monotonicity loss | Enforces ( \partial u/\partial y > 0 )       |
-| Outer-flow loss   | Enforces ( u \to U_\infty )                  |
-| Causal loss       | Penalizes unphysical downstream jumps        |
+| Loss Term | Physical Meaning |
+|---------|------------------|
+| **No-slip loss** | Enforces the no-slip boundary condition at the wall: $u(y=0) = 0$ |
+| **Smoothness loss** | Penalizes high curvature in the velocity profile, representing viscous diffusion |
+| **Monotonicity loss** | Enforces a positive wall-normal velocity gradient near the wall: $\partial u / \partial y > 0$ |
+| **Outer-flow loss** | Enforces convergence to the freestream velocity: $u \to U_\infty$ |
+| **Causal loss** | Penalizes unphysical jumps between consecutive downstream profiles |
 
-These constraints remove unphysical solutions and guide the network toward the correct solution manifold.
+These constraints eliminate non-physical solutions and guide the network toward the correct boundary-layer solution manifold without explicitly enforcing the governing equations.
 
 ---
 
