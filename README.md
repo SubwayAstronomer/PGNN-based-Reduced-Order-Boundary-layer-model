@@ -220,5 +220,3 @@ Planned extensions include:
 This project is intended for **research and educational use**.
 Please cite appropriately if used in academic work.
 
-
-Just tell me where this is headed.
